@@ -127,9 +127,13 @@ void cariKombinasi(int tahunTarget, const char *saptaWara, const char *pancaWara
             // Hitung jumlah hari sejak referensi
             int selisihHari = hitungHari(REFERENCE_YEAR, REFERENCE_MONTH, REFERENCE_DAY, 
                                         tahunTarget, bulan, tanggal);
+            if (selisihHari < 0){
+                selisihHari = -selisihHari;
+            }
             
             // Hitung sapta wara, panca wara, dan wuku untuk tanggal ini
             // Modified to handle negative day differences correctly
+            /*
             int sapta = (REFERENCE_SAPTA + selisihHari % 7 + 7) % 7;
             int panca = (REFERENCE_PANCA + selisihHari % 5 + 5) % 5;
             
@@ -142,7 +146,17 @@ void cariKombinasi(int tahunTarget, const char *saptaWara, const char *pancaWara
                 wukuIndeks = (REFERENCE_WUKU + wukuDiff % 30 + 30) % 30;
             } else {
                 wukuIndeks = (REFERENCE_WUKU + wukuDiff % 30) % 30;
-            }
+            }*/
+            
+            int sapta = (REFERENCE_SAPTA + selisihHari % 7);// % 7;
+            int panca = (REFERENCE_PANCA + selisihHari % 5);// % 5;
+            
+            // For wuku, we need to handle negative day differences specially
+            int wukuDiff = selisihHari / 7;
+            int wukuIndeks;
+                wukuIndeks = (REFERENCE_WUKU + wukuDiff % 30);// % 30;
+            
+            
             
             // Jika kombinasi sesuai dengan yang dicari
             if (sapta == targetSapta && panca == targetPanca && wukuIndeks == targetWuku) {
